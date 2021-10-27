@@ -1,8 +1,10 @@
 import React from 'react';
 import Navigation from './navigation/Navigation';
 import {LogBox} from 'react-native';
-import {Provider} from 'react-redux';
-//import store from './store/index';
+import Card from './components/Card';
+import Profile from './screen/Profile/Profile';
+import Home from './screen/Home';
+import UserProfile from './screen/UserData/UserProfile';
 
 LogBox.ignoreAllLogs();
 

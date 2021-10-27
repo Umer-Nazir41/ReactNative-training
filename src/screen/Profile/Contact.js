@@ -1,22 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import styles from '../../styles/Index';
 
 //Contact US page
 const Contact = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.CommonStyles.container}>
       <Text>Hello from Contact</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Contact;

@@ -1,11 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 //Home Page
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text>Hello From Home</Text>
+      <TouchableOpacity onPress={() => navigation.push('UserPost')}>
+        <Text>Press Me</Text>
+      </TouchableOpacity>
     </View>
   );
 };
