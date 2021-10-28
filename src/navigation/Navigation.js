@@ -5,11 +5,22 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import screens from '../screen/Index';
 
-const {SignIn, ForgetPassword, CreateAccount, Home, Profile, Contact} = screens;
+const {
+  SignIn,
+  ForgetPassword,
+  CreateAccount,
+  Home,
+  Profile,
+  Contact,
+  UserPost,
+  UserProfile,
+  UserDetails,
+} = screens;
 
 const AuthStack = createStackNavigator();
 const mainStack = createStackNavigator();
 const DrawerBar = createDrawerNavigator();
+const userStack = createStackNavigator();
 
 function MyStack() {
   return (
@@ -61,6 +72,28 @@ function Drawer() {
   );
 }
 
+function UserStack() {
+  return (
+    <userStack.Navigator initialRouteName="UserPost">
+      <userStack.Screen
+        name="Posts"
+        component={UserPost}
+        //options={{headerShown: false}}
+      />
+      <userStack.Screen
+        name="UserProfile"
+        component={UserProfile}
+        //options={{headerShown: false}}
+      />
+      <userStack.Screen
+        name="UserDetails"
+        component={UserDetails}
+        //options={{headerShown: true, title: 'Reset Password'}}
+      />
+    </userStack.Navigator>
+  );
+}
+
 function MainStack() {
   return (
     <mainStack.Navigator initialRouteName="Auth">
@@ -72,6 +105,11 @@ function MainStack() {
       <mainStack.Screen
         name="Home"
         component={Drawer}
+        options={{headerShown: false}}
+      />
+      <mainStack.Screen
+        name="UserPost"
+        component={UserStack}
         options={{headerShown: false}}
       />
     </mainStack.Navigator>
