@@ -76,7 +76,7 @@ function UserStack() {
   return (
     <userStack.Navigator initialRouteName="UserPost">
       <userStack.Screen
-        name="UserPost"
+        name="Posts"
         component={UserPost}
         //options={{headerShown: false}}
       />

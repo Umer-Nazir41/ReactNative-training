@@ -17,7 +17,6 @@ const UserProfile = ({route, navigation}) => {
         .then(function (response) {
           //console.log(response.data.name, response.data.email);
           onChangeUserProfile(userProfile => (userProfile = response.data));
-          console.log(userProfile.name);
         })
         .catch(function (error) {
           alert(error.message);
@@ -29,16 +28,11 @@ const UserProfile = ({route, navigation}) => {
 
   useEffect(() => {
     const getPhoto = async () => {
-      console.log(`https://jsonplaceholder.typicode.com/albums/${id}/photos`);
+      console.log(`https://jsonplaceholder.typicode.com/photos/${id}`);
       const users = await axios
-        .get(`https://jsonplaceholder.typicode.com/albums/${id}/photos`)
+        .get(`https://jsonplaceholder.typicode.com/photos/${id}`)
         .then(function (response) {
-          onChangeUserPhoto(
-            userPhoto =>
-              (userPhoto = response.data.filter(obj => {
-                return obj.id === 1;
-              })[0]),
-          );
+          onChangeUserPhoto(userPhoto => (userPhoto = response.data));
         })
         .catch(function (error) {
           alert(error.message);
