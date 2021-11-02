@@ -23,23 +23,37 @@ class UserProfile extends React.Component {
     this.setState({userPhoto: value});
   }
 
+  // getProfile = async () => {
+  //   const users = await axios
+  //     .get(
+  //       `https://jsonplaceholder.typicode.com/users/${this.props.route.params.id}`,
+  //     )
+  //     .then(response => {
+  //       this.onChangeUserProfile(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       alert(error.message);
+  //     });
+  // };
+
   getProfile = async () => {
-    const users = await axios
-      .get(
+    try {
+      const response = await fetch(
         `https://jsonplaceholder.typicode.com/users/${this.props.route.params.id}`,
-      )
-      .then(response => {
-        this.onChangeUserProfile(response.data);
-      })
-      .catch(function (error) {
-        alert(error.message);
-      });
+      );
+      let users = await response.json();
+
+      this.onChangeUserProfile(users);
+    } catch {
+      alert(error.message);
+      navigation.goBack();
+    }
   };
 
   getPhoto = async () => {
-    console.log(
-      `https://jsonplaceholder.typicode.com/photos/${this.props.route.params.id}`,
-    );
+    // console.log(
+    //   `https://jsonplaceholder.typicode.com/photos/${this.props.route.params.id}`,
+    // );
     const users = await axios
       .get(
         `https://jsonplaceholder.typicode.com/photos/${this.props.route.params.id}`,

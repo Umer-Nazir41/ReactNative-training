@@ -3,11 +3,14 @@ import axios from 'axios';
 import {View, FlatList, StyleSheet, StatusBar} from 'react-native';
 import uuid from 'react-native-uuid';
 import Item from '../../components/Card';
+import styles from '../../styles/Index';
+import {ActivityIndicator} from 'react-native-paper';
 
 class UserPosts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       posts: [],
     };
     this.onChangePosts = this.onChangePosts.bind(this);
@@ -18,13 +21,16 @@ class UserPosts extends React.Component {
   }
 
   getPosts = async () => {
+    this.setState({isLoading: true});
     await axios
       .get('https://jsonplaceholder.typicode.com/posts')
       .then(response => {
         this.onChangePosts([response.data]);
+        this.setState({isLoading: false});
       })
       .catch(function (error) {
         alert(error.message);
+        this.setState({isLoading: false});
       });
   };
 
@@ -34,7 +40,7 @@ class UserPosts extends React.Component {
 
   render() {
     //Destructuring State variables
-    const {posts} = this.state;
+    const {posts, isLoading} = this.state;
 
     const renderItem = ({item}) => (
       <Item
@@ -46,7 +52,10 @@ class UserPosts extends React.Component {
     );
 
     return (
-      <View style={styles.container}>
+      <View style={styles.commonStyles.flatListContainer}>
+        <View style={styles.commonStyles.container}>
+          {isLoading && <ActivityIndicator size="small" color="#0000ff" />}
+        </View>
         <FlatList
           data={posts[0]}
           renderItem={renderItem}
@@ -56,13 +65,5 @@ class UserPosts extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexGrow: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-});
 
 export default UserPosts;
