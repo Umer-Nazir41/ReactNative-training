@@ -64,11 +64,11 @@ const Login = ({navigation}) => {
         mode="contained"
         disabled={username === '' || password === ''}
         onPress={() => {
-          console.log(username, password);
+          //console.log(username, password);
           onChangeUsername('');
           onChangePassword('');
           if (username !== '' && password !== '') {
-            console.log(username, password);
+            //console.log(username, password);
             navigation.push('Home');
           }
         }}>

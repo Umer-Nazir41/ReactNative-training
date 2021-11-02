@@ -5,11 +5,9 @@ import {LogBox} from 'react-native';
 import {store} from './store/store';
 import {Provider} from 'react-redux';
 
-LogBox.ignoreAllLogs();
+import Contact from './screen/Profile/Contact';
 
-// export default function App() {
-//   return <Navigation />;
-// }
+LogBox.ignoreAllLogs();
 
 const App = () => {
   return (
@@ -20,3 +18,5 @@ const App = () => {
 };
 
 export default App;
+
+//

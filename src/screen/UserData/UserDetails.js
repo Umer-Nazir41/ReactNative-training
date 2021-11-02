@@ -41,7 +41,7 @@ const UserDetails = ({navigation, route}) => {
         .then(function (response) {
           //console.log(response.data.name, response.data.email);
           onChangeUserProfile(userProfile => (userProfile = response.data));
-          console.log(userProfile.name);
+          //console.log(userProfile.name);
         })
         .catch(function (error) {
           alert(error.message);

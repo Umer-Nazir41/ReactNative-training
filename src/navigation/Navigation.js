@@ -2,6 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import screens from '../screen/Index';
 
@@ -59,12 +60,12 @@ function Drawer() {
         options={{headerTitleAlign: 'center'}}
       />
       <DrawerBar.Screen
-        name="Profile"
+        name="Redux"
         component={Profile}
         options={{headerTitleAlign: 'center'}}
       />
       <DrawerBar.Screen
-        name="Contacts"
+        name="Maps"
         component={Contact}
         options={{headerTitleAlign: 'center'}}
       />
@@ -125,7 +126,6 @@ export default function App() {
 }
 
 /*
-
 <DrawerBar.Screen
         name="Main"
         component={Home}

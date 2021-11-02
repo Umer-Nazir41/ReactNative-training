@@ -28,7 +28,7 @@ const ForgetPassword = () => {
         style={styles.AuthStyles.button}
         mode="contained"
         onPress={() => {
-          console.log(username);
+          //console.log(username);
         }}>
         Search
       </Button>

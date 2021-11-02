@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import styles from '../../styles/Index';
+
 import counterSlice, {
   increment,
   decrement,
@@ -11,7 +13,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.CommonStyles.container}>
       <View style={[{width: '90%', margin: 10, backgroundColor: 'red'}]}>
         <Button
           title="+"
@@ -33,14 +35,5 @@ const Profile = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Profile;

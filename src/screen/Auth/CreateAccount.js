@@ -82,12 +82,12 @@ const SignUP = ({navigation}) => {
           password !== confirmPassword
         }
         onPress={() => {
-          console.log(username, password, confirmPassword);
+          //console.log(username, password, confirmPassword);
           onChangeUsername('');
           onChangePassword('');
           onChangeConfirmPassword('');
           if (username !== '' && password !== '') {
-            console.log(username, password);
+            //console.log(username, password);
           }
         }}>
         Sign UP

@@ -10,25 +10,45 @@ const UserProfile = ({route, navigation}) => {
   const [userProfile, onChangeUserProfile] = useState({name: '', email: ''});
   const [userPhoto, onChangeUserPhoto] = useState({url: ''});
 
+  // useEffect(() => {
+  // 	const getProfile = async () =>
+  // 	{
+
+  //     const users = await axios
+  //       .get(`https://jsonplaceholder.typicode.com/users/${id}`)
+  //       .then(function (response) {
+  //         //console.log(response.data.name, response.data.email);
+  //         onChangeUserProfile(userProfile => (userProfile = response.data));
+  //       })
+  //       .catch(function (error) {
+  //         alert(error.message);
+  //         navigation.goBack();
+  //       });
+  //   };
+
+  //   getProfile();
+  // }, []);
+
   useEffect(() => {
-    const getProfile = async () => {
-      const users = await axios
-        .get(`https://jsonplaceholder.typicode.com/users/${id}`)
-        .then(function (response) {
-          //console.log(response.data.name, response.data.email);
-          onChangeUserProfile(userProfile => (userProfile = response.data));
-        })
-        .catch(function (error) {
-          alert(error.message);
-        });
+    const getPhoto = async () => {
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${id}`,
+        );
+        let users = await response.json();
+        onChangeUserProfile(userProfile => (userProfile = users));
+      } catch {
+        alert(error.message);
+        navigation.goBack();
+      }
     };
 
-    getProfile();
+    getPhoto();
   }, []);
 
   useEffect(() => {
     const getPhoto = async () => {
-      console.log(`https://jsonplaceholder.typicode.com/photos/${id}`);
+      //console.log(`https://jsonplaceholder.typicode.com/photos/${id}`);
       const users = await axios
         .get(`https://jsonplaceholder.typicode.com/photos/${id}`)
         .then(function (response) {
@@ -36,6 +56,7 @@ const UserProfile = ({route, navigation}) => {
         })
         .catch(function (error) {
           alert(error.message);
+          navigation.goBack();
         });
     };
 
