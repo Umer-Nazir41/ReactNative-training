@@ -5,10 +5,9 @@ import {LogBox} from 'react-native';
 import {store} from './store/store';
 import {Provider} from 'react-redux';
 
-import Contact from './screen/Profile/Contact';
-
 LogBox.ignoreAllLogs();
 
+//CONNECT REDUX STORE WITH APP
 const App = () => {
   return (
     <Provider store={store}>
@@ -18,5 +17,3 @@ const App = () => {
 };
 
 export default App;
-
-//

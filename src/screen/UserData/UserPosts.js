@@ -5,11 +5,15 @@ import uuid from 'react-native-uuid';
 import Item from '../../components/Card';
 import styles from '../../styles/Index';
 import {ActivityIndicator} from 'react-native-paper';
+import Loader from 'react-native-modal-loader';
 
+//User Posts
 const UserPosts = ({navigation}) => {
   const [posts, onChangePosts] = React.useState([]);
   const [isLoading, onChangeLoading] = React.useState(false);
 
+  //Function To call API to get
+  //all posts using AXIO
   useEffect(() => {
     onChangeLoading(true);
     axios
@@ -25,6 +29,7 @@ const UserPosts = ({navigation}) => {
       });
   }, []);
 
+  //Render Function to render One by One
   const renderItem = ({item}) => (
     <Item
       title={item.title}
@@ -36,9 +41,8 @@ const UserPosts = ({navigation}) => {
 
   return (
     <View style={styles.CommonStyles.flatListContainer}>
-      <View style={styles.CommonStyles.container}>
-        {isLoading && <ActivityIndicator size="small" color="#0000ff" />}
-      </View>
+      {/* Display loader while making posts data request */}
+      <Loader loading={isLoading} color="#ff66be" />
       <FlatList
         data={posts[0]}
         renderItem={renderItem}

@@ -1,17 +1,20 @@
-import Profile from './Profile/Profile';
-import Contact from './Profile/Contact';
+import Redux from './Profile/Redux';
+import Map from './Profile/Map';
 import SignIn from './Auth/SignIn';
 import CreateAccount from './Auth/CreateAccount';
 import ForgetPassword from './Auth/ForgetPassword';
-import Home from './Home';
+import Home from './Home/Home';
 import UserPost from './UserData/UserPosts';
 import UserProfile from './UserData/UserProfile';
 import UserDetails from './UserData/UserDetails';
+import Splash from './Auth/Splash';
+import ContactPage from './Profile/Contacts';
+import Camera from './Profile/Camera';
 
-//Export all pages from a single point
+//EXPORT ALL SCREENS FROM SINGLE POINT
 const screens = {
-  Profile,
-  Contact,
+  Redux,
+  Map,
   SignIn,
   CreateAccount,
   ForgetPassword,
@@ -19,6 +22,9 @@ const screens = {
   UserPost,
   UserProfile,
   UserDetails,
+  Splash,
+  ContactPage,
+  Camera,
 };
 
 export default screens;

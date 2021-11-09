@@ -3,6 +3,7 @@ import {Button, StyleSheet, Text, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import styles from '../../styles/Index';
 
+//IMPORT ACTIONS
 import counterSlice, {
   increment,
   decrement,
@@ -10,6 +11,7 @@ import counterSlice, {
 
 const Profile = () => {
   const count = useSelector(state => state.counter.value);
+  //REDUCER ALTERNATIVE HOOK
   const dispatch = useDispatch();
 
   return (

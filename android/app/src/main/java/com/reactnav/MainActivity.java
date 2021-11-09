@@ -1,4 +1,4 @@
-package com.reactnav;
+package com.reactNav;
 
 import com.facebook.react.ReactActivity;
 

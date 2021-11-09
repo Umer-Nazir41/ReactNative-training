@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-//import GlobalStyle from '../utils/GlobalStyle';
+import {View} from 'react-native';
+import styles from '../../styles/Index';
 import MapView from 'react-native-maps';
 
 const Contact = () => {
+  //Khaadi store locations
   const markers = [
     {
       coordinate: {
@@ -63,16 +63,17 @@ const Contact = () => {
   ];
 
   return (
-    <View style={styles.body}>
-      {/* <Text>Hello From Maps</Text> */}
+    <View style={styles.CommonStyles.container}>
+      {/* MAP VIEW */}
       <MapView
-        style={styles.map}
+        style={{width: '100%', height: '100%'}}
         initialRegion={{
           latitude: 31.5341512166045,
           longitude: 74.35357759075175,
           latitudeDelta: 0.25,
           longitudeDelta: 0.15,
         }}>
+        {/* MARK KHAADI STORES */}
         {markers.map((item, index) => {
           return (
             <MapView.Marker
@@ -87,35 +88,4 @@ const Contact = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 40,
-    margin: 10,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
-
 export default Contact;
-
-/*
-<GooglePlacesAutocomplete
-    //   placeholder="Search"
-    //   onPress={(data, details = null) => {
-    //     // 'details' is provided when fetchDetails = true
-    //     console.log(data, details);
-    //   }}
-    //   query={{
-    //     key: 'AIzaSyDvU8zjUn04SXa4P6FIAjhG0EyXyrCBu_o',
-    //     language: 'en',
-    //     components: 'country:pk',
-    //   }}
-    // />
-*/

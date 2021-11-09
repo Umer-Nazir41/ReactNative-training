@@ -5,27 +5,39 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import screens from '../screen/Index';
+import {Icon} from 'react-native-elements';
 
 const {
   SignIn,
   ForgetPassword,
   CreateAccount,
   Home,
-  Profile,
-  Contact,
+  Redux,
+  Map,
   UserPost,
   UserProfile,
   UserDetails,
+  Splash,
+  ContactPage,
+  Camera,
 } = screens;
 
+//CREATE STACKS FOR SCREENS
 const AuthStack = createStackNavigator();
 const mainStack = createStackNavigator();
 const DrawerBar = createDrawerNavigator();
 const userStack = createStackNavigator();
+const contactStack = createBottomTabNavigator();
 
+//AUTH STACK
 function MyStack() {
   return (
-    <AuthStack.Navigator initialRouteName="SignIn">
+    <AuthStack.Navigator initialRouteName="Splash">
+      <AuthStack.Screen
+        name="Splash"
+        component={Splash}
+        options={{headerShown: false}}
+      />
       <AuthStack.Screen
         name="SignIn"
         component={SignIn}
@@ -45,6 +57,49 @@ function MyStack() {
   );
 }
 
+function ContactStack() {
+  return (
+    <contactStack.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: () => {
+          let iconName;
+          if (route.name === 'Dialer') {
+            iconName = 'call';
+          } else if (route.name === 'Camera') {
+            iconName = 'camera';
+          }
+          return <Icon name={iconName} />;
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: 'bold',
+        },
+        style: {
+          shadowOffset: 0,
+          elevation: 0,
+        },
+        initialRouteName: 'Dialer',
+        unmountOnBlur: false,
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: '#000',
+        tabBarActiveBackgroundColor: '#181819',
+        tabBarInactiveBackgroundColor: '#313035',
+      })}>
+      <contactStack.Screen
+        name="Dialer"
+        component={ContactPage}
+        options={{headerShown: false}}
+      />
+      <contactStack.Screen
+        name="Camera"
+        component={Camera}
+        options={{headerShown: false}}
+      />
+    </contactStack.Navigator>
+  );
+}
+
+//STACK FOR DRAWER
 function Drawer() {
   return (
     <DrawerBar.Navigator
@@ -57,22 +112,30 @@ function Drawer() {
       <DrawerBar.Screen
         name="Main Menu"
         component={Home}
-        options={{headerTitleAlign: 'center'}}
+        options={{
+          headerTitleAlign: 'center',
+        }}
       />
       <DrawerBar.Screen
         name="Redux"
-        component={Profile}
+        component={Redux}
         options={{headerTitleAlign: 'center'}}
       />
       <DrawerBar.Screen
-        name="Maps"
-        component={Contact}
+        name="Map"
+        component={Map}
+        options={{headerTitleAlign: 'center'}}
+      />
+      <DrawerBar.Screen
+        name="Contacts"
+        component={ContactStack}
         options={{headerTitleAlign: 'center'}}
       />
     </DrawerBar.Navigator>
   );
 }
 
+//STACK FOR API's PAGES
 function UserStack() {
   return (
     <userStack.Navigator initialRouteName="UserPost">
@@ -95,6 +158,7 @@ function UserStack() {
   );
 }
 
+//MAIN STACK TO COMBINE ALL STACK
 function MainStack() {
   return (
     <mainStack.Navigator initialRouteName="Auth">
@@ -124,22 +188,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-/*
-<DrawerBar.Screen
-        name="Main"
-        component={Home}
-        options={{headerShown: false}}
-      />
-      <DrawerBar.Screen
-        name="Profile"
-        component={Profile}
-        options={{headerShown: false}}
-      />
-      <DrawerBar.Screen
-        name="Contacts"
-        component={Contact}
-        options={{headerShown: false}}
-      />
-
-*/
