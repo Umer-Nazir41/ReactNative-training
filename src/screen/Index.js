@@ -10,6 +10,9 @@ import UserDetails from './UserData/UserDetails';
 import Splash from './Auth/Splash';
 import ContactPage from './Profile/Contacts';
 import Camera from './Profile/Camera';
+import InterceptorScreen from '../screen/Interceptor/Interceptor';
+import InterceptorLogin from '../screen/Interceptor/InterceptorLogin';
+import InterceptorUploadContact from '../screen/Interceptor/InterceptorContact';
 
 //EXPORT ALL SCREENS FROM SINGLE POINT
 const screens = {
@@ -25,6 +28,9 @@ const screens = {
   Splash,
   ContactPage,
   Camera,
+  InterceptorScreen,
+  InterceptorLogin,
+  InterceptorUploadContact,
 };
 
 export default screens;

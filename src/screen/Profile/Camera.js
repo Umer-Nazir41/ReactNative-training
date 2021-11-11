@@ -4,6 +4,8 @@ import {RNCamera} from 'react-native-camera';
 import {useCamera} from 'react-native-camera-hooks';
 import CustomButton from '../../components/Util';
 import RNFS from 'react-native-fs';
+import strings from '../../localization/LocalizedStrings';
+import styles from '../../styles/Index';
 
 export default function Camera() {
   const [{cameraRef}, {takePicture}] = useCamera(null);
@@ -29,13 +31,13 @@ export default function Camera() {
   };
 
   return (
-    <View style={styles.body}>
+    <View style={{flex: 1}}>
       <RNCamera
         ref={cameraRef}
         type={RNCamera.Constants.Type.back}
-        style={styles.preview}>
+        style={styles.ProfileStyles.camPreview}>
         <CustomButton
-          title="Capture"
+          title={strings.CAPTURE}
           color="#1eb900"
           onPressFunction={() => captureHandle()}
         />
@@ -44,16 +46,16 @@ export default function Camera() {
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-  },
-  preview: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-});
+// const styles = StyleSheet.create({
+//   body: {
+//     flex: 1,
+//   },
+//   preview: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'flex-end',
+//   },
+// });
 
 // import React from 'react';
 // import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';

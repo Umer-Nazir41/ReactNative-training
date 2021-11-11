@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import screens from '../screen/Index';
 import {Icon} from 'react-native-elements';
+import strings from '../localization/LocalizedStrings';
 
 const {
   SignIn,
@@ -20,6 +21,9 @@ const {
   Splash,
   ContactPage,
   Camera,
+  InterceptorScreen,
+  InterceptorLogin,
+  InterceptorUploadContact,
 } = screens;
 
 //CREATE STACKS FOR SCREENS
@@ -28,6 +32,7 @@ const mainStack = createStackNavigator();
 const DrawerBar = createDrawerNavigator();
 const userStack = createStackNavigator();
 const contactStack = createBottomTabNavigator();
+const InterceptorStack = createStackNavigator();
 
 //AUTH STACK
 function MyStack() {
@@ -46,12 +51,12 @@ function MyStack() {
       <AuthStack.Screen
         name="CreateAccount"
         component={CreateAccount}
-        options={{headerShown: false}}
+        options={{headerShown: false, title: `${strings.CREATE_ACCOUNT}`}}
       />
       <AuthStack.Screen
         name="ForgetPassword"
         component={ForgetPassword}
-        options={{headerShown: true, title: 'Reset Password'}}
+        options={{headerShown: true, title: `${strings.RESET_PASSWORD}`}}
       />
     </AuthStack.Navigator>
   );
@@ -99,6 +104,28 @@ function ContactStack() {
   );
 }
 
+function MyInterceptorStack() {
+  return (
+    <InterceptorStack.Navigator initialRouteName="InterceptorLogin">
+      <InterceptorStack.Screen
+        name="InterceptorScreen"
+        component={InterceptorScreen}
+        options={{headerShown: false}}
+      />
+      <InterceptorStack.Screen
+        name="InterceptorLogin"
+        component={InterceptorLogin}
+        options={{headerShown: false}}
+      />
+      <InterceptorStack.Screen
+        name="InterceptorUploadContact"
+        component={InterceptorUploadContact}
+        options={{headerShown: false}}
+      />
+    </InterceptorStack.Navigator>
+  );
+}
+
 //STACK FOR DRAWER
 function Drawer() {
   return (
@@ -114,22 +141,32 @@ function Drawer() {
         component={Home}
         options={{
           headerTitleAlign: 'center',
+          title: `${strings.MAIN_MENU}`,
         }}
       />
       <DrawerBar.Screen
         name="Redux"
         component={Redux}
-        options={{headerTitleAlign: 'center'}}
+        options={{headerTitleAlign: 'center', title: `${strings.REDUX}`}}
       />
       <DrawerBar.Screen
         name="Map"
         component={Map}
-        options={{headerTitleAlign: 'center'}}
+        options={{headerTitleAlign: 'center', title: `${strings.MAP}`}}
       />
       <DrawerBar.Screen
         name="Contacts"
         component={ContactStack}
-        options={{headerTitleAlign: 'center'}}
+        options={{
+          headerTitleAlign: 'center',
+          title: '',
+          drawerLabel: `${strings.DIALER}`,
+        }}
+      />
+      <DrawerBar.Screen
+        name="Interceptor"
+        component={MyInterceptorStack}
+        options={{headerTitleAlign: 'center', title: `${strings.INTERCEPTOR}`}}
       />
     </DrawerBar.Navigator>
   );

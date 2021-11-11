@@ -6,15 +6,15 @@ import {Button} from 'react-native-paper';
 import styles from '../../styles/Index';
 import Loader from 'react-native-modal-loader';
 
+import {emailValidator, passValidator} from '../../utilties/Validator';
+import strings from '../../localization/LocalizedStrings';
+
 //Sign UP Page
 const SignUP = ({navigation}) => {
   //State variable to hold state and hooks to change them
   const [email, onChangeEmail] = React.useState('');
   const [password, onChangePassword] = React.useState('');
   const [isLoading, onChangeLoading] = React.useState(false);
-
-  const [authenticated, onChangeAuth] = React.useState(false);
-  const [isLoggedIn, onChangeLoggedIn] = React.useState(false);
 
   //Firebase function to signup using email
   //and password
@@ -56,7 +56,7 @@ const SignUP = ({navigation}) => {
 
       {/* Header */}
       <View style={styles.AuthStyles.HeaderView}>
-        <Text style={styles.AuthStyles.headerText}>SIGN UP</Text>
+        <Text style={styles.AuthStyles.headerText}>{strings.SIGN_UP}</Text>
       </View>
 
       {/* Input Form */}
@@ -64,7 +64,7 @@ const SignUP = ({navigation}) => {
         <TextInput
           editable
           maxLength={20}
-          placeholder="Email"
+          placeholder={`${strings.EMAIL}`}
           placeholderTextColor="#003f5c"
           onChangeText={text => onChangeEmail(text)}
           value={email}
@@ -76,7 +76,7 @@ const SignUP = ({navigation}) => {
         <TextInput
           editable
           maxLength={20}
-          placeholder="Password"
+          placeholder={`${strings.PASSWORD}`}
           secureTextEntry={true}
           placeholderTextColor="#003f5c"
           onChangeText={text => onChangePassword(text)}
@@ -89,7 +89,7 @@ const SignUP = ({navigation}) => {
       <TouchableOpacity
         style={styles.AuthStyles.forgetPassword}
         onPress={() => navigation.push('ForgetPassword')}>
-        <Text>Forget Password</Text>
+        <Text>{strings.FORGET_PASSWORD}</Text>
       </TouchableOpacity>
 
       {/* Back to Sign IN */}
@@ -97,7 +97,7 @@ const SignUP = ({navigation}) => {
         style={[styles.AuthStyles.button, {bottom: 80}]}
         mode="contained"
         onPress={() => navigation.pop()}>
-        Already Have an Account
+        {strings.ALREADY_EXIST}
       </Button>
 
       {/* SignUP Button With null value validation */}
@@ -106,9 +106,13 @@ const SignUP = ({navigation}) => {
         mode="contained"
         disabled={password === '' || email === ''}
         onPress={() => {
-          CreateUserAccount(email, password);
+          emailValidator(email)
+            ? passValidator(password)
+              ? CreateUserAccount(email, password)
+              : Alert.alert('Password must be greater than 7 character')
+            : Alert.alert('Email is not Correct');
         }}>
-        Sign UP
+        {strings.SIGN_UP}
       </Button>
     </View>
   );

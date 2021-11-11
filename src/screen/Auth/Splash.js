@@ -1,12 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
-import auth, {firebase} from '@react-native-firebase/auth';
+import {View, I18nManager} from 'react-native';
+import {firebase} from '@react-native-firebase/auth';
+import {getLng} from '../../utilties/LangHandler';
+import strings from '../../localization/LocalizedStrings';
 
 //SPLASH SCREEN (USED TO DECIDE TO ENTER HOME OR LOGIN PAGE)
 const Splash = ({navigation}) => {
   const [authenticated, onChangeAuth] = useState(false);
-  //const [initializing, setInitializing] = useState(true);
-  //const [user, setUser] = useState();
+  //const [show, setShow] = useState(false);
+  //const [lang, setLang] = useState('en');
+
+  const selectedLng = async () => {
+    const lngData = await getLng();
+    if (!!lngData) {
+      if (lngData === 'en') {
+        I18nManager.forceRTL(false);
+      } else if (lngData === 'ur') {
+        I18nManager.forceRTL(true);
+      }
+
+      strings.setLanguage(lngData);
+    }
+    //setLang(lngData);
+    console.log('selected Language data==>>>', lngData);
+  };
 
   //CHECK IF USER AUTHENTICATED
   __isTheUserAuthenticated = () => {
@@ -19,30 +36,17 @@ const Splash = ({navigation}) => {
     }
   };
 
-  //CHECK IF PAGE IS STILL LOADING
-  // function onAuthStateChanged(user) {
-  //   setUser(user);
-  //   if (initializing) setInitializing(false);
-  // }
-
   //GET LOGIN STATUS
-  useEffect(() => {
-    //const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    __isTheUserAuthenticated();
-    //return subscriber; // unsubscribe on unmount
+  useEffect(async () => {
+    await selectedLng();
+    await __isTheUserAuthenticated();
   }, []);
 
-  // useEffect(() => {}, []);
-
-  //IF PAGE IS STILL LOADING
-  //if (initializing) return null;
-
-  //RETURN HOME OR SIGNIN PAGE DEPENDING
   return (
     <View>
       {authenticated
         ? navigation.navigate('Home')
-        : navigation.navigate('SignIn')}
+        : navigation.navigate('SignIn', {lang})}
     </View>
   );
 };

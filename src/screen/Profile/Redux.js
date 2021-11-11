@@ -16,7 +16,7 @@ const Profile = () => {
 
   return (
     <View style={styles.CommonStyles.container}>
-      <View style={[{width: '90%', margin: 10, backgroundColor: 'red'}]}>
+      <View style={styles.ProfileStyles.reduxButton}>
         <Button
           title="+"
           onPress={() => {
@@ -26,7 +26,7 @@ const Profile = () => {
       </View>
 
       <Text>{count}</Text>
-      <View style={[{width: '90%', margin: 10, backgroundColor: 'red'}]}>
+      <View style={styles.ProfileStyles.reduxButton}>
         <Button
           title="-"
           onPress={() => {

@@ -66,7 +66,7 @@ const Contact = () => {
     <View style={styles.CommonStyles.container}>
       {/* MAP VIEW */}
       <MapView
-        style={{width: '100%', height: '100%'}}
+        style={styles.ProfileStyles.fullScreen}
         initialRegion={{
           latitude: 31.5341512166045,
           longitude: 74.35357759075175,

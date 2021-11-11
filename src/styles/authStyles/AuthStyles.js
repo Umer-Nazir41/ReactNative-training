@@ -42,6 +42,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: '#FF1493',
   },
+  langButtonView: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: '15%',
+    left: '20%',
+    width: '100%',
+  },
+  langButton: {
+    borderColor: '#000',
+    borderWidth: 1,
+    width: '30%',
+  },
 });
 
 export default styles;

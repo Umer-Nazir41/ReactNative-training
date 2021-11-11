@@ -1,17 +1,27 @@
-import React from 'react';
-import {Text, View, TextInput, StyleSheet, Alert} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, View, TextInput, I18nManager} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import {Button} from 'react-native-paper';
 import styles from '../../styles/Index';
 import Loader from 'react-native-modal-loader';
 
+import strings from '../../localization/LocalizedStrings';
+import RNRestart from 'react-native-restart';
+import {setLng, getLng} from '../../utilties/LangHandler';
+
 //Login Page
-const Login = ({navigation}) => {
+const Login = ({navigation, route: {lang}}) => {
   //State variable and hook to change them
-  const [email, onChangeEmail] = React.useState('');
-  const [password, onChangePassword] = React.useState('');
-  const [isLoading, onChangeLoading] = React.useState(false);
+  const [email, onChangeEmail] = useState('');
+  const [password, onChangePassword] = useState('');
+  const [isLoading, onChangeLoading] = useState(false);
+
+  //Language Switch
+  const onChangeLng = async lng => {
+    await setLng(lng);
+    RNRestart.Restart();
+  };
 
   //Firebase Signin call with persistance
   const __doSingIn = async (email, password) => {
@@ -34,11 +44,29 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.AuthStyles.mainView}>
+      {console.log('Rendered')}
       {/* Display loader while making signin request */}
       <Loader loading={isLoading} color="#ff66be" />
       {/* Header */}
-      <View style={styles.AuthStyles.HeaderView}>
-        <Text style={styles.AuthStyles.headerText}>LOGIN</Text>
+      <View style={[styles.AuthStyles.HeaderView]}>
+        <Text style={styles.AuthStyles.headerText}>{strings.LOGIN}</Text>
+      </View>
+      <View style={styles.AuthStyles.langButtonView}>
+        <Button
+          style={styles.AuthStyles.langButton}
+          onPress={() => {
+            onChangeLng('en');
+          }}>
+          English
+        </Button>
+        <View style={{width: '2%'}}></View>
+        <Button
+          style={styles.AuthStyles.langButton}
+          onPress={() => {
+            onChangeLng('ur');
+          }}>
+          {strings.URDU}
+        </Button>
       </View>
 
       {/* Input Form */}
@@ -46,7 +74,7 @@ const Login = ({navigation}) => {
         <TextInput
           editable
           maxLength={40}
-          placeholder="Email"
+          placeholder={`${strings.EMAIL}`}
           placeholderTextColor="#003f5c"
           onChangeText={text => onChangeEmail(text)}
           value={email}
@@ -58,7 +86,7 @@ const Login = ({navigation}) => {
         <TextInput
           editable
           maxLength={40}
-          placeholder="Password"
+          placeholder={`${strings.PASSWORD}`}
           secureTextEntry={true}
           placeholderTextColor="#003f5c"
           onChangeText={text => onChangePassword(text)}
@@ -71,7 +99,7 @@ const Login = ({navigation}) => {
       <TouchableOpacity
         style={styles.AuthStyles.forgetPassword}
         onPress={() => navigation.push('ForgetPassword')}>
-        <Text>Forget Password</Text>
+        <Text>{strings.FORGET_PASSWORD}</Text>
       </TouchableOpacity>
 
       {/* Move to Sign UP */}
@@ -79,7 +107,7 @@ const Login = ({navigation}) => {
         style={[styles.AuthStyles.button, {bottom: 80}]}
         mode="contained"
         onPress={() => navigation.push('CreateAccount')}>
-        Sign UP
+        {strings.SIGN_UP}
       </Button>
 
       {/* SignIN Button With null value validation */}
@@ -90,7 +118,7 @@ const Login = ({navigation}) => {
         onPress={() => {
           __doSingIn(email, password);
         }}>
-        Login
+        {strings.SIGN_IN}
       </Button>
     </View>
   );

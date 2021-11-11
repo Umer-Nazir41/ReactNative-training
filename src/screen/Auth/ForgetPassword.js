@@ -4,6 +4,7 @@ import {Button} from 'react-native-paper';
 import styles from '../../styles/Index';
 import auth, {firebase} from '@react-native-firebase/auth';
 import Loader from 'react-native-modal-loader';
+import strings from '../../localization/LocalizedStrings';
 
 //Forget password Screen
 const ForgetPassword = ({navigation}) => {
@@ -43,7 +44,7 @@ const ForgetPassword = ({navigation}) => {
         <TextInput
           editable
           maxLength={40}
-          placeholder="Email"
+          placeholder={`${strings.EMAIL}`}
           placeholderTextColor="#003f5c"
           onChangeText={text => onChangeEmail(text)}
           value={email}
@@ -58,7 +59,7 @@ const ForgetPassword = ({navigation}) => {
         onPress={() => {
           ResetPassword(email);
         }}>
-        Send Reset Link
+        {strings.SEND_RESET_LINK}
       </Button>
     </View>
   );
