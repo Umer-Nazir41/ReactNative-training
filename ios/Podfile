@@ -12,6 +12,10 @@ target 'reactNavClass' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'reactNavClassTests' do
     inherit! :complete
     # Pods for testing

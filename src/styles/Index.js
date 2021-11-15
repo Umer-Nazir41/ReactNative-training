@@ -1,10 +1,10 @@
 import AuthStyles from './authStyles/AuthStyles';
-import commonStyles from './commonStyles/commonStyles';
+import CommonStyles from './commonStyles/CommonStyles';
 import UserStyles from './userStyles/UserStyles';
 
 const styles = {
   AuthStyles,
-  commonStyles,
+  CommonStyles,
   UserStyles,
 };
 

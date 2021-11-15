@@ -3,42 +3,78 @@ import {Text, View, TextInput, StyleSheet, Alert} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Button} from 'react-native-paper';
 import styles from '../../styles/Index';
+import auth from '@react-native-firebase/auth';
+import Loader from 'react-native-modal-loader';
+import strings from '../../localization/LocalizedStrings';
 
 //Sign UP Page
 class SignUP extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      email: '',
       password: '',
-      confirmPassword: '',
+      isLoading: false,
     };
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+
+    //Bind function with class
+    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-    this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
+    this.onChangeLoading = this.onChangeLoading.bind(this);
   }
 
-  // User Name
-  onChangeUsername(value) {
-    this.setState({username: value});
+  // Getter / Setter
+  onChangeEmail(value) {
+    this.setState({email: value});
   }
 
-  //Password
   onChangePassword(value) {
     this.setState({password: value});
   }
 
-  //Confirm Password
-  onChangeConfirmPassword(value) {
-    this.setState({confirmPassword: value});
+  onChangeLoading(value) {
+    this.setState({isLoading: value});
   }
+
+  //Firebase function to signup using email
+  //and password
+
+  firebaseAuth = async (email, password) => {
+    this.onChangeLoading(true);
+    await auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        this.onChangeEmail('');
+        this.onChangePassword('');
+        this.onChangeLoading(false);
+        //if successfully signup -> navigate to login screen
+        this.props.navigation.navigate('SignIn');
+      })
+      .catch(error => {
+        //Email Already Exists
+        if (error.code === 'auth/email-already-in-use') {
+          this.onChangeLoading(false);
+          Alert.alert('That email address is already in use!');
+        }
+        //Invalid Email
+        if (error.code === 'auth/invalid-email') {
+          this.onChangeLoading(false);
+          Alert.alert('That email address is invalid!');
+        }
+        this.onChangeLoading(false);
+        console.error(error);
+      });
+    this.onChangeLoading(false);
+  };
 
   render() {
     //Destructuring State variables
-    const {username, password, confirmPassword} = this.state;
+    const {email, password, isLoading} = this.state;
 
     return (
       <View style={styles.AuthStyles.mainView}>
+        {/* Display loader while making signup request */}
+        <Loader loading={isLoading} color="#ff66be" />
         {/* Header */}
         <View style={styles.AuthStyles.HeaderView}>
           <Text style={styles.AuthStyles.headerText}>SIGN UP</Text>
@@ -49,10 +85,10 @@ class SignUP extends React.Component {
           <TextInput
             editable
             maxLength={20}
-            placeholder="Username"
+            placeholder={`${strings.EMAIL}`}
             placeholderTextColor="#003f5c"
-            onChangeText={text => this.onChangeUsername(text)}
-            value={username}
+            onChangeText={text => this.onChangeEmail(text)}
+            value={email}
             style={styles.AuthStyles.InputField}
           />
         </View>
@@ -61,7 +97,7 @@ class SignUP extends React.Component {
           <TextInput
             editable
             maxLength={20}
-            placeholder="Password"
+            placeholder={`${strings.PASSWORD}`}
             secureTextEntry={true}
             placeholderTextColor="#003f5c"
             onChangeText={text => this.onChangePassword(text)}
@@ -70,24 +106,11 @@ class SignUP extends React.Component {
           />
         </View>
 
-        <View style={styles.AuthStyles.inputView}>
-          <TextInput
-            editable
-            maxLength={20}
-            placeholder="Confirm Password"
-            secureTextEntry={true}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.onChangeConfirmPassword(text)}
-            value={confirmPassword}
-            style={styles.AuthStyles.InputField}
-          />
-        </View>
-
         {/* Forget Password Button*/}
         <TouchableOpacity
           style={styles.AuthStyles.forgetPassword}
           onPress={() => this.props.navigation.navigate('ForgetPassword')}>
-          <Text>Forget Password</Text>
+          <Text>{strings.FORGET_PASSWORD}</Text>
         </TouchableOpacity>
 
         {/* Sign IN Button */}
@@ -95,28 +118,18 @@ class SignUP extends React.Component {
           style={[styles.AuthStyles.button, {bottom: 80}]}
           mode="contained"
           onPress={() => this.props.navigation.pop()}>
-          Already Have an Account
+          {strings.ALREADY_EXIST}
         </Button>
 
         {/* SignUP Button */}
         <Button
           style={styles.AuthStyles.button}
           mode="contained"
-          disabled={
-            password === '' ||
-            confirmPassword === '' ||
-            password !== confirmPassword
-          }
+          disabled={password === '' || email === ''}
           onPress={() => {
-            console.log(username, password, confirmPassword);
-            this.onChangeUsername('');
-            this.onChangePassword('');
-            this.onChangeConfirmPassword('');
-            if (username !== '' && password !== '') {
-              console.log(username, password, confirmPassword);
-            }
+            this.firebaseAuth(email, password);
           }}>
-          Sign UP
+          {strings.SIGN_UP}
         </Button>
       </View>
     );

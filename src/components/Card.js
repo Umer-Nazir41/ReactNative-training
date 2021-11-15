@@ -1,15 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
+//CARD COMPONENT FOR FLATLIST
 class Card extends React.Component {
   constructor(props) {
     super(props);
-    //console.log(props);
   }
 
   render() {
+    //DESTRUCTURE ALL REQUIRED PROPS
     const {title, body, id, navigation} = this.props;
 
+    //DISPLAY CARD WITH DATA IN IT
     return (
       <TouchableOpacity
         onPress={() => {

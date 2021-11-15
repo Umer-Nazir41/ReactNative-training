@@ -1,9 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+//INITIAL STATE OF STORE VARIABLE
 const initialState = {
   value: 0,
 };
 
+//REDUCER AND ACTION FOR COUNTER
 export const counterSlice = createSlice({
   name: 'counter',
   initialState,

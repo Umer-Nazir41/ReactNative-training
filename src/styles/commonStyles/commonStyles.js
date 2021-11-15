@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     marginTop: StatusBar.currentHeight || 0,
   },
+  wideButton: {
+    width: '90%',
+    margin: 10,
+    backgroundColor: 'red',
+  },
 });
 
 export default styles;

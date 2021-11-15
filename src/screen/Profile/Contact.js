@@ -1,112 +1,130 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-//import styles from '../../styles/Index';
-import MapView from 'react-native-maps';
+import {
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  FlatList,
+  SafeAreaView,
+  Text,
+  View,
+  Linking,
+} from 'react-native';
+import {Icon} from 'react-native-elements';
+import Contacts from 'react-native-contacts';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Loader from 'react-native-modal-loader';
 
-//Contact Page
-class Contact extends React.Component {
+class ContactPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [
-        {
-          coordinate: {
-            latitude: 31.516035154936237,
-            longitude: 74.29593596449625,
-          },
-          title: 'Khaadi Allama Iqbal Town',
-          description:
-            'Askari Bank, 12, near Pak Block Allama Iqbal Town, Lahore, Punjab 54000, Pakistan',
-        },
-        {
-          coordinate: {
-            latitude: 31.46763040160472,
-            longitude: 74.26539985544724,
-          },
-          title: 'Khaadi Emporium',
-          description:
-            'Shop No. F 37 & S 18 ; NISHAT EMPORIUM MALL, Abdul Haque Rd, Commercial Area Phase 2 Johar Town, Lahore, Punjab 54000, Pakistan',
-        },
-        {
-          coordinate: {
-            latitude: 31.465196624975448,
-            longitude: 74.31521116942058,
-          },
-          title: 'Khaadi Link Road',
-          description:
-            '12 Model Town Link Rd, near Raja Sahib, Model Town, Lahore, Punjab 54000, Pakistan',
-        },
-        {
-          coordinate: {
-            latitude: 31.471619143175584,
-            longitude: 74.35631852661074,
-          },
-          title: 'Khaadi Packages Mall',
-          description:
-            'Shop # 2078 Level 2, Packages Mall, Walton Road, Nishtar Town, Lahore, Punjab 54000, Pakistan',
-        },
-        {
-          coordinate: {
-            latitude: 31.472160843323074,
-            longitude: 74.37555511312061,
-          },
-          title: 'Khaadi DHA',
-          description:
-            'Store No 204 & 205, Phase 3, Y Block, Sector Y DHA Phase 3, Lahore, Punjab 54792, Pakistan',
-        },
-        {
-          coordinate: {
-            latitude: 31.524119454530958,
-            longitude: 74.38043037706088,
-          },
-          title: 'Khaadi Mall of Lahore',
-          description:
-            'Park Lane Tower, Shop No. 16-A, B & 18-A, Tufail Rd, Cantt, Lahore, Punjab 54810, Pakistan',
-        },
-      ],
+      contactList: [],
+      isLoading: false,
     };
+
+    //Bind function with class
+    this.setContactList = this.setContactList.bind(this);
+    this.onChangeLoading = this.onChangeLoading.bind(this);
   }
 
-  render() {
-    return (
-      <View style={styles.body}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 31.5341512166045,
-            longitude: 74.35357759075175,
-            latitudeDelta: 0.25,
-            longitudeDelta: 0.15,
-          }}>
-          {this.state.markers.map((item, index) => {
-            return (
-              <MapView.Marker
-                key={index}
-                coordinate={item.coordinate}
-                title={item.title}
-                description={item.description}
-              />
+  // Getter/Setter
+  setContactList(value) {
+    this.setState({contactList: value});
+  }
+
+  onChangeLoading(value) {
+    this.setState({isLoading: value});
+  }
+
+  getContact() {
+    if (Platform.OS === 'ios') {
+      Contacts.getAll((err, contact) => {
+        if (err) {
+          this.onChangeLoading(false);
+          Alert.alert('Error while fetching Contacts. Try again later!');
+        }
+        this.onChangeLoading(false);
+        this.setContactList(contact);
+      });
+    } else if (Platform.OS === 'android') {
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
+        Title: 'Contacts',
+        message: 'Permission Required to display contacts',
+      }).then(() => {
+        Contacts.getAll()
+          .then(contacts => {
+            contacts.sort(
+              (a, b) => a.givenName.toLowerCase() > b.givenName.toLowerCase(),
             );
-          })}
-        </MapView>
+            this.onChangeLoading(false);
+            this.setContactList(contacts);
+            console.log('contacts', contacts[0].phoneNumbers[0].number);
+          })
+          .catch(error => {
+            this.onChangeLoading(false);
+            alert('Permission to access contacts was denied', error);
+            console.warn('Permission to access contacts was denied', error);
+          });
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.onChangeLoading(true);
+    this.getContact();
+  }
+
+  renderItems = ({item}) => (
+    <View style={{minHeight: 70, padding: 5, flexDirection: 'row'}}>
+      <View>
+        <Text
+          style={{
+            color: '#bada55',
+            fontWeight: 'bold',
+            fontSize: 26,
+            paddingLeft: 20,
+            paddingTop: 20,
+          }}>
+          {item.displayName}
+        </Text>
+        <Text
+          style={{
+            color: 'white',
+            fontWeight: 'bold',
+            paddingLeft: 20,
+          }}>
+          {item.phoneNumbers[0].number}
+        </Text>
+      </View>
+      <View style={{position: 'absolute', right: 20}}>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL(`tel:${item.phoneNumbers[0].number}`);
+          }}>
+          <Icon name="call" style={{paddingLeft: 25, paddingTop: 40}} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  render() {
+    const {contactList, isLoading} = this.state;
+
+    return (
+      <View style={{backgroundColor: '#757575', flex: 1}}>
+        <SafeAreaView style={{backgroundColor: '#2f363c'}} />
+
+        <View>
+          {/* DISPLAY LOADER WHILE MAKING DETAILS REQUEST */}
+          <Loader loading={isLoading} color="#ff66be" />
+          <FlatList
+            data={contactList}
+            renderItem={this.renderItems}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 40,
-    margin: 10,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
-
-export default Contact;
+export default ContactPage;

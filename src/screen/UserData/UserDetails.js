@@ -3,11 +3,17 @@ import axios from 'axios';
 import {View, StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
 import {Avatar} from 'react-native-elements';
 import styles from '../../styles/Index';
+import Loader from 'react-native-modal-loader';
 
+//User Details Page
 class UserDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
+
+      // Empty object to prevent app from crashing
+      // while data is being fetched from api
       Profile: {
         id: '',
         name: '',
@@ -33,35 +39,51 @@ class UserDetails extends React.Component {
       },
     };
 
+    //Bind function with class
     this.onChangeProfile = this.onChangeProfile.bind(this);
+    this.onChangeLoading = this.onChangeLoading.bind(this);
   }
 
+  //Getter/Setter
   onChangeProfile(value) {
     this.setState({Profile: value});
   }
+  onChangeLoading(value) {
+    this.setState({isLoading: value});
+  }
 
+  //Function To get user details such as username and email
+  // Using AXIOS Library
   getProfile = async () => {
-    const users = await axios
+    this.onChangeLoading(true);
+    await axios
       .get(
         `https://jsonplaceholder.typicode.com/users/${this.props.route.params.id}`,
       )
       .then(response => {
         this.onChangeProfile(response.data);
+        this.onChangeLoading(false);
       })
       .catch(function (error) {
+        this.onChangeLoading(false);
         alert(error.message);
       });
   };
 
   componentDidMount() {
+    //CALL FUNCTION TO GET USER PROFILE
+    //AS SOON AS COMPONENT LOADS
     this.getProfile();
   }
 
   render() {
-    const {Profile} = this.state;
+    const {Profile, isLoading} = this.state;
 
     return (
       <View style={styles.UserStyles.userContainer}>
+        {/* DISPLAY LOADER WHILE MAKING DETAILS REQUEST */}
+        <Loader loading={isLoading} color="#ff66be" />
+
         <View style={styles.UserStyles.mainView}>
           <View style={styles.UserStyles.photoView}>
             <Avatar
